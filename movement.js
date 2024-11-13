@@ -1,5 +1,3 @@
-background(255);
-
 function basketBall(x, y, s) {
   push();
   noStroke();
@@ -143,7 +141,7 @@ let m = 100;
 let speed = 1 / 3;
 let speed1 = 1;
 function draw() {
-  clear();
+  background(255);
 
   n = n + speed;
   y = y + speed;

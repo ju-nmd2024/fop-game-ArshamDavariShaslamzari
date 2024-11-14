@@ -1,3 +1,62 @@
+function startScreen() {
+  image(startScreenBackground, 0, 0, 600, 500);
+  fill(255, 0, 0);
+  clickingBotton(185, 300, 1 / 2, 0, 0, 0, "start", 173, 72, 13);
+  clickingBotton(185, 220, 1 / 2, 173, 72, 13, "rules", 0, 0, 0);
+}
+function gameScreen() {
+  background(50);
+  image(gameBackground, 0, 0, 600, 500);
+  velocity += acceleration;
+  //basketbalX = basketbalX + speed;
+  basketbalY = basketbalY + velocity;
+
+  m = m + speed1;
+
+  framework(m, 200, 1.5);
+  basket(m + 75, 240, 2 / 3);
+  if (m > 400 || m < 100) {
+    speed1 *= -1;
+  }
+
+  if (basketbalY > 200) {
+    velocity *= 0;
+  }
+  if (keyIsDown(38)) {
+    velocity -= 0.5;
+  }
+
+  push();
+  translate(basketbalX, basketbalY);
+  rotate(basketballRotation);
+  reallbasketball(0, 0, 1 / 2);
+  basketballRotation = basketballRotation + 0.02;
+  pop();
+}
+function resultScreen() {
+  image(resultScreenBackground, 0, 0, 600, 500);
+}
+function clickingBotton(
+  x,
+  y,
+  s,
+  colorCode1,
+  colorCode2,
+  colorCode3,
+  massage,
+  textColor1,
+  textColor2,
+  textColor3
+) {
+  push();
+  noStroke();
+  fill(colorCode1, colorCode2, colorCode3);
+  rect(x, y, 200 * s, 100 * s, 18);
+  pop();
+  fill(textColor1, textColor2, textColor3);
+  textSize(30);
+  text(massage, x + 20, y + 35);
+}
 function basketBall(x, y, s) {
   push();
   noStroke();
@@ -133,36 +192,31 @@ function reallbasketball(j, k, d) {
   drawLetter("B", j - 9 * d, k + 30 * d, 30 * d, 0);
   drawLetter("A", j + 14 * d, k + 28 * d, 20 * d, 211, 211, 211);
 }
-
-let n = 100;
-let y = 100;
+function setup() {
+  createCanvas(600, 500);
+}
+let basketbalX = 300;
+let basketbalY = 30;
 let basketballRotation = 0;
 let m = 100;
-let speed = 1 / 3;
+let velocity = 1 / 3;
 let speed1 = 1;
+let acceleration = 0.1;
+let state = "start game";
+let gameBackground;
+
+function preload() {
+  gameBackground = loadImage("/1116.jpg");
+  startScreenBackground = loadImage("/3d.jpg");
+  resultScreenBackground = loadImage("/resultscreenbackground.jpg");
+}
+
 function draw() {
-  background(255);
-
-  n = n + speed;
-  y = y + speed;
-  m = m + speed1;
-
-  framework(m, 200, 1.5);
-  basket(m + 75, 240, 2 / 3);
-  if (m > 400) {
-    speed1 *= -1;
-  } else if (m < 100) {
-    speed1 *= -1;
+  if (state === "start game") {
+    startScreen();
+  } else if (state === "game") {
+    gameScreen();
+  } else if (state === "result") {
+    resultScreen();
   }
-
-  if (n > 300 || y > 200) {
-    speed *= 0;
-  }
-
-  push();
-  translate(n, y);
-  rotate(basketballRotation);
-  reallbasketball(0, 0, 1 / 2);
-  basketballRotation = basketballRotation + 0.02;
-  pop();
 }

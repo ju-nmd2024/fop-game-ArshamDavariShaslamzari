@@ -1,15 +1,30 @@
+let basketbalGameScreenX = 300;
+let basketbalGameScreenY = 30;
+let basketballRotation = 0;
+let m = 100;
+let velocity = 1 / 3;
+let speed1 = 1;
+let acceleration = 0.1;
+let state = "start game";
+let gameBackground;
 function startScreen() {
   image(startScreenBackground, 0, 0, 600, 500);
   fill(255, 0, 0);
-  clickingBotton(185, 300, 1 / 2, 0, 0, 0, "start", 173, 72, 13);
-  clickingBotton(185, 220, 1 / 2, 173, 72, 13, "rules", 0, 0, 0);
+  clickingBotton(350, 300, 1 / 2, 0, 0, 0, "start", 173, 72, 13);
+  clickingBotton(350, 220, 1 / 2, 173, 72, 13, "rules", 0, 0, 0);
+  push();
+  translate(basketbalGameScreenX, basketbalGameScreenY);
+  rotate(basketballRotation);
+  reallbasketball(0, 0, 1 / 2);
+  basketballRotation = basketballRotation + 0.02;
+  pop();
 }
 function gameScreen() {
   background(50);
   image(gameBackground, 0, 0, 600, 500);
   velocity += acceleration;
   //basketbalX = basketbalX + speed;
-  basketbalY = basketbalY + velocity;
+  basketbalGameScreenY = basketbalGameScreenY + velocity;
 
   m = m + speed1;
 
@@ -19,7 +34,7 @@ function gameScreen() {
     speed1 *= -1;
   }
 
-  if (basketbalY > 200) {
+  if (basketbalGameScreenY > 200) {
     velocity *= 0;
   }
   if (keyIsDown(38)) {
@@ -27,14 +42,32 @@ function gameScreen() {
   }
 
   push();
-  translate(basketbalX, basketbalY);
+  translate(basketbalGameScreenX, basketbalGameScreenY);
   rotate(basketballRotation);
   reallbasketball(0, 0, 1 / 2);
   basketballRotation = basketballRotation + 0.02;
   pop();
 }
-function resultScreen() {
+function gameRules() {
+  image(startScreenBackground, 0, 0, 600, 500);
+  strokeWeight(2);
+  rect(300, 30, 180, 250, 18);
+  push();
+  clickingBotton(185, 300, 1 / 2, 0, 0, 0, "start", 173, 72, 13);
+  pop();
+}
+function lostScreeen() {
+  push();
   image(resultScreenBackground, 0, 0, 600, 500);
+  clickingBotton(245, 300, 1 / 2, 0, 0, 0, "agin", 256, 256, 0);
+  pop();
+  push();
+  noStroke();
+  fill(256, 0, 0);
+  ellipse(290, 200, 300, 90);
+  pop();
+  textSize(30);
+  text("oops you lose !", 190, 205);
 }
 function clickingBotton(
   x,
@@ -195,15 +228,6 @@ function reallbasketball(j, k, d) {
 function setup() {
   createCanvas(600, 500);
 }
-let basketbalX = 300;
-let basketbalY = 30;
-let basketballRotation = 0;
-let m = 100;
-let velocity = 1 / 3;
-let speed1 = 1;
-let acceleration = 0.1;
-let state = "start game";
-let gameBackground;
 
 function preload() {
   gameBackground = loadImage("/1116.jpg");
@@ -214,9 +238,11 @@ function preload() {
 function draw() {
   if (state === "start game") {
     startScreen();
+  } else if (state === "rules") {
+    gameRules();
   } else if (state === "game") {
     gameScreen();
-  } else if (state === "result") {
-    resultScreen();
+  } else if (state === "again") {
+    lostScreeen();
   }
 }

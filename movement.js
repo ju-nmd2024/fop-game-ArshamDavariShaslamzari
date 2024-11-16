@@ -6,7 +6,42 @@ let velocity = 1 / 3;
 let speed1 = 1;
 let acceleration = 0.1;
 let state = "start game";
+let gameTimer = 0;
 let gameBackground;
+function mouseClicked() {
+  if (
+    state === "start game" &&
+    mouseX > 350 &&
+    mouseX < 450 &&
+    mouseY > 220 &&
+    mouseY < 270
+  )
+    state = "rules";
+  else if (
+    state === "rules" &&
+    mouseX > 185 &&
+    mouseX < 285 &&
+    mouseY > 300 &&
+    mouseY < 350
+  )
+    state = "game";
+  else if (
+    state === "start game" &&
+    mouseX > 350 &&
+    mouseX < 450 &&
+    mouseY > 300 &&
+    mouseY < 350
+  )
+    state = "game";
+  else if (
+    state === "again" &&
+    mouseX > 245 &&
+    mouseX < 345 &&
+    mouseY > 300 &&
+    mouseY < 350
+  )
+    state = "game";
+}
 function startScreen() {
   image(startScreenBackground, 0, 0, 600, 500);
   fill(255, 0, 0);
@@ -22,9 +57,19 @@ function startScreen() {
 function gameScreen() {
   background(50);
   image(gameBackground, 0, 0, 600, 500);
+  if (keyIsDown(39)) {
+    basketbalGameScreenX = basketbalGameScreenX + velocity;
+  } else if (keyIsDown(37)) {
+    basketbalGameScreenX = basketbalGameScreenX - velocity;
+  }
+  if (keyIsDown(40)) {
+    basketbalGameScreenY = basketbalGameScreenY + velocity;
+  } else if (keyIsDown(38)) {
+    basketbalGameScreenY = basketbalGameScreenY - velocity;
+  }
   velocity += acceleration;
-  //basketbalX = basketbalX + speed;
-  basketbalGameScreenY = basketbalGameScreenY + velocity;
+
+  //basketbalGameScreenY = basketbalGameScreenY + velocity;
 
   m = m + speed1;
 
@@ -242,6 +287,11 @@ function draw() {
     gameRules();
   } else if (state === "game") {
     gameScreen();
+    gameTimer = gameTimer + 1;
+    if (gameTimer >= 100) {
+      gameTimer = 0;
+      state = "again";
+    }
   } else if (state === "again") {
     lostScreeen();
   }

@@ -302,9 +302,9 @@ function reallbasketball(j, k, d) {
 }
 
 function preload() {
-  gameBackground = loadImage("/1116.jpg");
-  startScreenBackground = loadImage("/3d.jpg");
-  resultScreenBackground = loadImage("/resultscreenbackground.jpg");
+  gameBackground = loadImage("1116.jpg");
+  startScreenBackground = loadImage("3D.jpg");
+  resultScreenBackground = loadImage("resultscreenbackground.jpg");
 }
 
 function draw() {

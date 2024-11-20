@@ -1,3 +1,7 @@
+function setup() {
+  createCanvas(600, 500);
+}
+
 let basketbalGameScreenX = 300;
 let basketbalGameScreenY = 30;
 let basketbalStartScreenX = 230;
@@ -295,9 +299,6 @@ function reallbasketball(j, k, d) {
   drawLetter("N", j - 26 * d, k + 28 * d, 20 * d, 211, 211, 211);
   drawLetter("B", j - 9 * d, k + 30 * d, 30 * d, 0);
   drawLetter("A", j + 14 * d, k + 28 * d, 20 * d, 211, 211, 211);
-}
-function setup() {
-  createCanvas(600, 500);
 }
 
 function preload() {

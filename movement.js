@@ -1,13 +1,14 @@
 let basketbalGameScreenX = 300;
 let basketbalGameScreenY = 30;
+let basketbalStartScreenX = 230;
+let basketbalStartScreenY = 335;
 let basketballRotation = 0;
-let m = 100;
 let velocity = 1 / 3;
-let speed1 = 1;
 let acceleration = 0.1;
 let state = "start game";
 let gameTimer = 0;
 let gameBackground;
+
 function mouseClicked() {
   if (
     state === "start game" &&
@@ -39,16 +40,27 @@ function mouseClicked() {
     mouseX < 345 &&
     mouseY > 300 &&
     mouseY < 350
-  )
+  ) {
     state = "game";
+  } else if (
+    state === "won" &&
+    mouseX > 245 &&
+    mouseX < 377 &&
+    mouseY > 300 &&
+    mouseY < 364
+  ) {
+    state = "game";
+  }
 }
 function startScreen() {
+  push();
   image(startScreenBackground, 0, 0, 600, 500);
   fill(255, 0, 0);
   clickingBotton(350, 300, 1 / 2, 0, 0, 0, "start", 173, 72, 13);
   clickingBotton(350, 220, 1 / 2, 173, 72, 13, "rules", 0, 0, 0);
+  pop();
   push();
-  translate(basketbalGameScreenX, basketbalGameScreenY);
+  translate(basketbalStartScreenX, basketbalStartScreenY);
   rotate(basketballRotation);
   reallbasketball(0, 0, 1 / 2);
   basketballRotation = basketballRotation + 0.02;
@@ -57,6 +69,8 @@ function startScreen() {
 function gameScreen() {
   background(50);
   image(gameBackground, 0, 0, 600, 500);
+  basketbalGameScreenY = basketbalGameScreenY + velocity;
+
   if (keyIsDown(39)) {
     basketbalGameScreenX = basketbalGameScreenX + velocity;
   } else if (keyIsDown(37)) {
@@ -69,19 +83,9 @@ function gameScreen() {
   }
   velocity += acceleration;
 
-  //basketbalGameScreenY = basketbalGameScreenY + velocity;
+  framework(230, 300, 1.5);
+  basket(255 + 50, 350, 2 / 3);
 
-  m = m + speed1;
-
-  framework(m, 200, 1.5);
-  basket(m + 75, 240, 2 / 3);
-  if (m > 400 || m < 100) {
-    speed1 *= -1;
-  }
-
-  if (basketbalGameScreenY > 200) {
-    velocity *= 0;
-  }
   if (keyIsDown(38)) {
     velocity -= 0.5;
   }
@@ -94,25 +98,48 @@ function gameScreen() {
   pop();
 }
 function gameRules() {
+  push();
   image(startScreenBackground, 0, 0, 600, 500);
+  push();
+  pop();
   strokeWeight(2);
   rect(300, 30, 180, 250, 18);
+  pop();
   push();
   clickingBotton(185, 300, 1 / 2, 0, 0, 0, "start", 173, 72, 13);
+  pop();
+  push();
+  //textWrap(WORD);
+  text("there is time limit for goal ", 310, 85);
+  text("the ball fall down on ground ", 310, 125);
+  text("basketbasll in basket and if", 310, 105);
+  text("you will lose", 310, 145);
+  text("control ball with Arrow keys", 310, 165);
   pop();
 }
 function lostScreeen() {
   push();
   image(resultScreenBackground, 0, 0, 600, 500);
-  clickingBotton(245, 300, 1 / 2, 0, 0, 0, "agin", 256, 256, 0);
+  clickingBotton(245, 300, 1 / 2, 0, 0, 0, "again", 256, 256, 0);
   pop();
   push();
   noStroke();
   fill(256, 0, 0);
   ellipse(290, 200, 300, 90);
   pop();
+  push();
   textSize(30);
-  text("oops you lose !", 190, 205);
+  text("oops you lost !", 190, 205);
+  pop();
+}
+function wonScreen() {
+  push();
+  background(0);
+  fill(255, 0, 0);
+  textSize(30);
+  text("Congragulation you won", 200, 200);
+  pop();
+  clickingBotton(245, 300, 2 / 3, 128, 0, 0, " again", 256, 256, 0);
 }
 function clickingBotton(
   x,
@@ -287,12 +314,31 @@ function draw() {
     gameRules();
   } else if (state === "game") {
     gameScreen();
+    if (
+      basketbalGameScreenY > 350 &&
+      basketbalGameScreenY < 400 &&
+      basketbalGameScreenX > 270 &&
+      basketbalGameScreenX < 340
+    ) {
+      velocity *= 0;
+      state = "won";
+    } else if (basketbalGameScreenY > 500) {
+      velocity *= 0;
+      state = "again";
+      basketbalGameScreenX = 300;
+      basketbalGameScreenY = 30;
+    }
+
     gameTimer = gameTimer + 1;
-    if (gameTimer >= 100) {
+    if (gameTimer >= 1000) {
       gameTimer = 0;
       state = "again";
     }
   } else if (state === "again") {
     lostScreeen();
+  } else if (state === "won") {
+    wonScreen();
+    basketbalGameScreenX = 300;
+    basketbalGameScreenY = 30;
   }
 }

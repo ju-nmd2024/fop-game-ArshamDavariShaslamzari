@@ -7,7 +7,6 @@ let velocity = 1 / 3;
 let acceleration = 0.1;
 let state = "start game";
 let gameTimer = 0;
-let gameBackground;
 
 function mouseClicked() {
   if (
@@ -139,7 +138,7 @@ function wonScreen() {
   textSize(30);
   text("Congragulation you won", 200, 200);
   pop();
-  clickingBotton(245, 300, 2 / 3, 128, 0, 0, " again", 256, 256, 0);
+  clickingBotton(300, 300, 2 / 3, 128, 0, 0, " again", 256, 256, 0);
 }
 function clickingBotton(
   x,
